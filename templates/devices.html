@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<script>
+    async function deleteDevice(deviceId) {
+        const response = await fetch(`/devices/${deviceId}`, {
+            method: 'DELETE',
+        });
+
+        if (response.ok) {
+            document.getElementById(`device-${deviceId}`).remove();
+            alert('Устройство удалено');
+        } else {
+            const errorMessage = await response.json();
+            alert(errorMessage.detail);
+        }
+    }
+</script>
+
+{% for device in devices %}
+    <div id="device-{{ device.id }}">
+        {{ device.name }}
+        <button onclick="deleteDevice({{ device.id }})">Удалить</button>
+    </div>
+{% endfor %}
+{% endblock %}

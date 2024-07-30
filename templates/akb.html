@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Создать новое устройство</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+    <script>
+        async function submitForm(event) {
+            event.preventDefault();
+            const deviceName = document.getElementById("deviceName").value;
+            const akbIds = Array.from(document.querySelectorAll('input[name="akb"]:checked')).map(el => el.value);
+
+            // Проверка на максимальное количество АКБ
+            if (akbIds.length > 5) {
+                alert("Максимум 5 АКБ можно выбрать.");
+                return;
+            }
+
+            const deviceData = {
+                name: deviceName,
+                akb_ids: akbIds
+            };
+
+            try {
+                const response = await fetch('/devices/post', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(deviceData)
+                });
+
+                if (response.ok) {
+                    alert("Устройство успешно создано!");
+                    window.location.href = "/new_device"; // Перезагрузка страницы
+                } else {
+                    const errorMessage = await response.json();
+                    alert(`Ошибка: ${errorMessage.detail}`);
+                }
+            } catch (err) {
+                console.error("Ошибка при отправке данных:", err);
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Создать новое устройство</h2>
+        <form id="deviceForm" onsubmit="submitForm(event)">
+            <div class="mb-3">
+                <label for="deviceName" class="form-label">Название устройства</label>
+                <input type="text" class="form-control" id="deviceName" required>
+            </div>
+
+            <h4>Выберите АКБ (максимум 5):</h4>
+            <div class="form-check">
+                {% for akb in akb_list %}
+                    <input class="form-check-input" type="checkbox" name="akb" value="{{ akb.id }}" id="akb_{{ akb.id }}">
+                    <label class="form-check-label" for="akb_{{ akb.id }}">
+                        {{ akb.name }}
+                    </label><br>
+                {% endfor %}
+            </div>
+
+            <button type="submit" class="btn btn-primary">Сохранить устройство</button>
+        </form>
+    </div>
+</body>
+</html>

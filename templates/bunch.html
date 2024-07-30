@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Устройства и все АКБ у устройств</h1>
+
+{% for device in devices %}
+    <h3 class="device">{{ device.name }}</h3>
+
+    {% set has_akb = false %}
+
+    {% for akb in akbs %}
+        {% if akb.id in device_akb_map[device.id] %}
+            <div class="akb">{{ akb.name }}</div>
+            {% set has_akb = true %}
+        {% endif %}
+    {% endfor %}
+
+    {% if not has_akb %}
+        <div class="akb">Нет АКБ</div>
+    {% endif %}
+
+{% endfor %}
+{% endblock %}

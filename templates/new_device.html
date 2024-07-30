@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section>
+    <h2>Создать устройство</h2>
+    <form id="deviceForm" onsubmit="createDevice(event)">
+        <label for="device_name">Имя устройства:</label><br>
+        <input type="text" id="device_name" name="name" required><br><br>
+
+        <label>Выберите аккумуляторы:</label><br>
+        <div id="akb_ids_container">
+            {% for akb in akb_list %}
+                <input type="checkbox" name="akb_ids" value="{{ akb.id }}"> {{ akb.name }}<br>
+            {% endfor %}
+        </div>
+        <br>
+
+        <button type="submit">Создать устройство</button>
+    </form>
+</section>
+
+<script>
+async function createDevice(event) {
+    event.preventDefault();  // Предотвращаем стандартное поведение формы
+
+    const formData = new FormData(document.getElementById('deviceForm'));
+    const data = {
+        name: formData.get('name'),
+        akb_ids: Array.from(formData.getAll('akb_ids')).map(Number) // Преобразуем значения чекбоксов в массив чисел
+    };
+
+    try {
+        const response = await fetch('/devices/post', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            alert(`Устройство "${result.name}" успешно создано с ID: ${result.id}`);
+            // Можно добавить логику для обновления списка устройств или перехода на другую страницу
+        } else {
+            alert('Ошибка при создании устройства');
+        }
+    } catch (error) {
+        console.error('Ошибка:', error);
+        alert('Произошла ошибка при связи с сервером');
+    }
+}
+</script>
+
+{% endblock %}

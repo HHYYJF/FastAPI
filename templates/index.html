@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Список электроники</h2>
+<div style="display: flex; justify-content: space-between;">
+    <div style="flex: 1; margin-right: 10px;">
+        <h2>Список всех устройств</h2>
+        <div>
+            {% for device in devices %}
+                <div>
+                     <div> {{ device.name }}</div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div style="flex: 1; margin-left: 10px;">
+        <h2>Список всех аккумуляторов</h2>
+        <div>
+            {% for akb in akbs %}
+                <div>
+                    <div>{{ akb.name }}</div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

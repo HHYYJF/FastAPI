@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Устройства </title>
+</head>
+<body style="text-align: center">
+    <h1> Устройства </h1>
+  <style>
+    div {
+        background-color: #f8f9fa; /* Светлый фон */
+        padding: 10px 20px; /* Отступы вокруг элементов */
+        border-radius: 5px; /* Закругленные углы */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Легкая тень */
+    }
+
+    a {
+        text-decoration: none; /* Убираем подчеркивание ссылок */
+        color: #007bff; /* Цвет текста ссылок */
+        font-weight: bold; /* Жирный текст */
+        margin: 0 15px; /* Горизонтальные отступы между ссылками */
+        transition: color 0.3s ease; /* Плавный переход цвета при наведении */
+    }
+
+    a:hover {
+        color: #0056b3; /* Цвет текста на наведение */
+    }
+
+    a:last-child {
+        margin-right: 0; /* Удаляем правый отступ у последней ссылки */
+    }
+</style>
+
+<div>
+    <a href="/"> Главная страница </a>
+    <a href="/new_device"> Создать девайс </a>
+    <a href="/new_akb"> Создать АКБ </a>
+    <a href="/bunch"> Связка</a>
+    <a href="/devices"> Удалить устройство</a>
+    <a href="/akb"> Удалить АКБ</a>
+</div>
+    <hr>
+    {% block content %}
+    {% endblock %}
+</body>
+</html>
